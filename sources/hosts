@@ -1,0 +1,5 @@
+15.16.17.16 redis-master
+15.16.17.17 redis-slave-1
+15.16.17.18 redis-slave-2
+15.16.17.19 wordpress-1
+15.16.17.20 wordpress-2
