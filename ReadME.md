@@ -1,11 +1,10 @@
 # Tugas 3 Basis Data Terdistribusi
 
 - [Diagram Arsitektur](#diagram-arsitektur)
-- [Buat 3 Node Redis Server (1 Master dan 2 Slave)](#3-node)
-- [Buat 2 Node Web Server (Di dalamnya ada Wordpress dan MySQL)](#2-node)
-- [Pengujian performa kedua web server](#tes-performa)
-- [Pengujian fail over](#tes-failover)
-- [Pengujian JMeter](#j-meter)
+- [3 Node Redis Server](#3-Node-Redis-Server)
+- [2 Node Web Server](#2-Node-Web-Server)
+- [Pengujian Performa](#Pengujian-Performa)
+- [Pengujian Fail Over](#Pengujian-Fail-Over)
 
 ## Diagram Arsitektur
 
@@ -87,7 +86,7 @@ Vagrant.configure("2") do |config|
 end
 ```
 
-## Buat 3 Node Redis Server (1 Master dan 2 Slave)
+## 3 Node Redis Server
 
 ### Vagrant File untuk membuat 3 Redis Server
 
@@ -241,7 +240,7 @@ sentinel parallel-syncs redis-cluster 1
 sentinel failover-timeout redis-cluster 10000
 ```
 
-## Buat 2 Node Web Server (Di dalamnya ada Wordpress dan MySQL)
+## 2 Node Web Server
 
 ### Vagrant File untuk membuat 2 Web Server
 
@@ -444,7 +443,7 @@ ps -ef | grep redis
 ![cluster](/img/cluster.png)
 Bisa dilihat bahwa replikasi telah berjalan
 
-## Pengujian performa kedua web server
+## Pengujian Performa
 
 ### Instalasi Wordpress pada salah satu web server
 Langkah - langkah  
@@ -490,6 +489,20 @@ Agar lebih mudah maka halaman awal default apache dinonaktifkan terlebih dahulu
 ![diagnostics](/img/diagnostics.png)
 8. Tampilan Wordpress
 ![index_awal](/img/index_awal.png)
+
+
+### Pengujian JMeter
+
+1. 50 Koneksi
+![jmeter-50](/img/jmeter-50.png)
+2. 100 + 16(NRP)
+![jmeter-116](/img/jmeter-116.png)
+2. 200 + 16(NRP)
+![jmeter-216](/img/jmeter-216.png)
+
+    Dari pengujian menggunakan JMeter Wordpress yang menggunakan redis sebagai cache nya melakukan load data relatif lambat daripada yang tidak menggunakan redis. Padahal seharusnya Wordpress yang menggunakan redis bisa melakukan load data lebih cepat.  
+    Asumsi saya pribadi hal ini terjadi karena memori yang relatif kecil pada masing-masing redis server.
+
 ## Pengujian fail over
 
 1. Dengan cara mematikan redis server master, dalam kasus ini mematikan redisslave2
@@ -501,15 +514,3 @@ Dari hasil keluaran bisa dilihat bahwa sekarang master pindah ke redisslave1
 3. Memastikan dengan login ke redisslave2
 ![new_master2](/img/new_master2.png)
 4. Proses fail over berhasil ditangani
-
-## Pengujian JMeter
-
-1. 50 Koneksi
-![jmeter-50](/img/jmeter-50.png)
-2. 100 + 16(NRP)
-![jmeter-116](/img/jmeter-116.png)
-2. 200 + 16(NRP)
-![jmeter-216](/img/jmeter-216.png)
-
-    Dari pengujian menggunakan JMeter Wordpress yang menggunakan redis sebagai cache nya melakukan load data relatif lambat daripada yang tidak menggunakan redis. Padahal seharusnya Wordpress yang menggunakan redis bisa melakukan load data lebih cepat.  
-    Asumsi saya pribadi hal ini terjadi karena memori yang relatif kecil pada masing-masing redis server.
