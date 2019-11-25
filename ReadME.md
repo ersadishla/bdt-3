@@ -440,6 +440,16 @@ Untuk mengecek apakah proses berjalan
 ```
 ps -ef | grep redis
 ```
+Untuk mengecek apakah replikasi berjalan
+```
+vagrant ssh redismaster
+```
+```
+redis-cli -h 15.16.17.16
+```
+```
+info replication
+```
 ![cluster](/img/cluster.png)
 Bisa dilihat bahwa replikasi telah berjalan
 
