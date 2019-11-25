@@ -1,3 +1,9 @@
+vagrant ssh redismaster
+
+vagrant ssh redisslave1
+
+vagrant ssh redisslave2
+
 vagrant
 
 cd /
@@ -7,5 +13,7 @@ sudo redis-server etc/redis/redis.conf &
 sudo redis-server etc/redis-sentinel.conf --sentinel &
 
 sudo pkill redis-server
+
+sudo service redis-server stop
 
 ps -ef | grep redis
